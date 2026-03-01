@@ -70,7 +70,7 @@ export function Header() {
           />
         </button>
         {openDropdown === "convert-pdf" && (
-          <ul className="menu absolute left-0 top-full z-[60] mt-1 min-w-[220px] rounded-box border border-base-300 bg-base-100 p-2 shadow-xl">
+          <ul className="menu absolute left-0 top-full z-[60] mt-1 min-w-[220px] rounded-box border border-slate-200 bg-white p-2 shadow-xl dark:border-slate-700 dark:bg-slate-800">
             {convertPdfDropdownTools.map(({ href, title, icon: Icon }) => (
               <li key={href}>
                 <Link
@@ -109,7 +109,7 @@ export function Header() {
           />
         </button>
         {openDropdown === "all-image" && (
-          <div className="absolute right-0 top-full z-[60] mt-1 w-[min(90vw,680px)] max-w-[calc(100vw-2rem)] rounded-xl border border-base-300 bg-base-100 p-6 shadow-xl">
+          <div className="absolute right-0 top-full z-[60] mt-1 w-[min(90vw,680px)] max-w-[calc(100vw-2rem)] rounded-xl border border-slate-200 bg-white p-6 shadow-xl dark:border-slate-700 dark:bg-slate-800">
             <MegaMenuContent columns={allImageToolsColumns} onLinkClick={() => setOpenDropdown(null)} />
           </div>
         )}

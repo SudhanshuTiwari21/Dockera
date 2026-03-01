@@ -25,8 +25,10 @@ function applyTheme(theme: Theme, persist = true) {
   const root = document.documentElement;
   if (theme === "dark") {
     root.classList.add("dark");
+    root.setAttribute("data-theme", "dark");
   } else {
     root.classList.remove("dark");
+    root.setAttribute("data-theme", "light");
   }
   if (persist) {
     try {
