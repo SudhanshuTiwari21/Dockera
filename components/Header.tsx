@@ -80,13 +80,13 @@ export function Header() {
         </ul>
       </details>
 
-      {/* All Image Tools dropdown – DaisyUI details/summary (click to open) */}
-      <details className="dropdown dropdown-bottom dropdown-center group">
+      {/* All Image Tools dropdown – DaisyUI details/summary (click to open); dropdown-end keeps it on screen */}
+      <details className="dropdown dropdown-bottom dropdown-end group">
         <summary className="inline-flex h-full cursor-pointer list-none items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 lg:px-3 [&::-webkit-details-marker]:hidden">
           <span className="whitespace-nowrap">All Image Tools</span>
           <ChevronDown className="h-4 w-4 shrink-0 transition group-open:rotate-180" aria-hidden />
         </summary>
-        <div className="dropdown-content z-[60] mt-1 w-[min(90vw,680px)] rounded-xl border border-base-300 bg-base-100 p-6 shadow-xl">
+        <div className="dropdown-content z-[60] mt-1 w-[min(90vw,680px)] max-w-[calc(100vw-2rem)] rounded-xl border border-base-300 bg-base-100 p-6 shadow-xl">
           <MegaMenuContent columns={allImageToolsColumns} />
         </div>
       </details>
