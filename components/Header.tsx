@@ -14,7 +14,7 @@ import {
 const topBarClass =
   "h-1.5 bg-[#3d2914] dark:bg-amber-950";
 
-type DropdownId = "all-pdf" | null;
+type DropdownId = "convert-pdf" | "all-image" | "all-pdf" | null;
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -57,52 +57,69 @@ export function Header() {
         Compress PDF
       </Link>
 
-      {/* Convert PDF dropdown – DaisyUI with hover */}
-      <div className="dropdown dropdown-end dropdown-hover group">
-        <div
-          tabIndex={0}
-          role="button"
-          className="inline-flex h-full cursor-pointer items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 lg:px-3"
+      {/* Convert PDF dropdown – hover to open (same as All PDF Tools) */}
+      <div
+        className="relative flex h-full items-center"
+        ref={openDropdown === "convert-pdf" ? dropdownRef : undefined}
+        onMouseEnter={() => setOpenDropdown("convert-pdf")}
+        onMouseLeave={() => setOpenDropdown(null)}
+      >
+        <button
+          type="button"
+          className="inline-flex items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 lg:px-3"
+          aria-expanded={openDropdown === "convert-pdf"}
+          aria-haspopup="true"
         >
           <span className="whitespace-nowrap">Convert PDF</span>
-          <ChevronDown className="h-4 w-4 shrink-0 transition group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden />
-        </div>
-        <ul
-          tabIndex={-1}
-          className="menu dropdown-content z-[60] mt-1 min-w-[220px] rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
-        >
-          {convertPdfDropdownTools.map(({ href, title, icon: Icon }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className="flex items-center gap-3 rounded-lg"
-              >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300">
-                  <Icon className="h-4 w-4" aria-hidden />
-                </span>
-                {title}
-              </Link>
-            </li>
-          ))}
-        </ul>
+          <ChevronDown
+            className={`h-4 w-4 shrink-0 transition ${openDropdown === "convert-pdf" ? "rotate-180" : ""}`}
+            aria-hidden
+          />
+        </button>
+        {openDropdown === "convert-pdf" && (
+          <ul className="menu absolute left-0 top-full z-[60] mt-1 min-w-[220px] rounded-box border border-base-300 bg-base-100 p-2 shadow-xl">
+            {convertPdfDropdownTools.map(({ href, title, icon: Icon }) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="flex items-center gap-3 rounded-lg"
+                  onClick={() => setOpenDropdown(null)}
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                    <Icon className="h-4 w-4" aria-hidden />
+                  </span>
+                  {title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
-      {/* All Image Tools dropdown – DaisyUI with hover; dropdown-end keeps it on screen */}
-      <div className="dropdown dropdown-bottom dropdown-end dropdown-hover group">
-        <div
-          tabIndex={0}
-          role="button"
-          className="inline-flex h-full cursor-pointer items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 lg:px-3"
+      {/* All Image Tools dropdown – hover to open */}
+      <div
+        className="relative flex h-full items-center"
+        ref={openDropdown === "all-image" ? dropdownRef : undefined}
+        onMouseEnter={() => setOpenDropdown("all-image")}
+        onMouseLeave={() => setOpenDropdown(null)}
+      >
+        <button
+          type="button"
+          className="inline-flex items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 lg:px-3"
+          aria-expanded={openDropdown === "all-image"}
+          aria-haspopup="true"
         >
           <span className="whitespace-nowrap">All Image Tools</span>
-          <ChevronDown className="h-4 w-4 shrink-0 transition group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden />
-        </div>
-        <div
-          tabIndex={-1}
-          className="dropdown-content z-[60] mt-1 w-[min(90vw,680px)] max-w-[calc(100vw-2rem)] rounded-xl border border-base-300 bg-base-100 p-6 shadow-xl"
-        >
-          <MegaMenuContent columns={allImageToolsColumns} />
-        </div>
+          <ChevronDown
+            className={`h-4 w-4 shrink-0 transition ${openDropdown === "all-image" ? "rotate-180" : ""}`}
+            aria-hidden
+          />
+        </button>
+        {openDropdown === "all-image" && (
+          <div className="absolute right-0 top-full z-[60] mt-1 w-[min(90vw,680px)] max-w-[calc(100vw-2rem)] rounded-xl border border-base-300 bg-base-100 p-6 shadow-xl">
+            <MegaMenuContent columns={allImageToolsColumns} onLinkClick={() => setOpenDropdown(null)} />
+          </div>
+        )}
       </div>
 
       {/* All PDF Tools dropdown */}

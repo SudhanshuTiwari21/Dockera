@@ -20,7 +20,13 @@ const themeScript = `
 (function() {
   var k = 'docera-theme';
   var v = localStorage.getItem(k);
-  if (v === 'dark') document.documentElement.classList.add('dark');
+  var theme;
+  if (v === 'dark' || v === 'light') {
+    theme = v;
+  } else {
+    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  if (theme === 'dark') document.documentElement.classList.add('dark');
   else document.documentElement.classList.remove('dark');
 })();
 `;
