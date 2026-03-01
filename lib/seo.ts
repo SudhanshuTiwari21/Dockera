@@ -1,4 +1,4 @@
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://docmint.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://docera.com";
 
 export type MetadataParams = {
   title?: string;
@@ -17,7 +17,7 @@ export function buildCanonicalUrl(path: string): string {
 
 export function getDefaultMetadata(params: MetadataParams = {}) {
   const {
-    title = "DocMint – Free Online Document & Image Tools for India",
+    title = "Docera – Free Online Document & Image Tools for India",
     description = "Resize images for government forms, compress PDFs online, create passport photos, and extract signatures. Free tools for Indian government forms and documents.",
     keywords = [
       "resize image for govt forms",
@@ -36,14 +36,14 @@ export function getDefaultMetadata(params: MetadataParams = {}) {
 
   const canonical = buildCanonicalUrl(path || "/");
   const fullTitle =
-    title.includes("DocMint") ? title : (path ? `${title} | DocMint` : title);
+    title.includes("Docera") ? title : (path ? `${title} | Docera` : title);
 
   return {
     title: fullTitle,
     description,
     keywords: keywords.join(", "),
-    authors: [{ name: "DocMint", url: SITE_URL }],
-    creator: "DocMint",
+    authors: [{ name: "Docera", url: SITE_URL }],
+    creator: "Docera",
     metadataBase: new URL(SITE_URL),
     alternates: {
       canonical,
@@ -56,7 +56,7 @@ export function getDefaultMetadata(params: MetadataParams = {}) {
       url: canonical,
       title: fullTitle,
       description,
-      siteName: "DocMint",
+      siteName: "Docera",
       images: [{ url: image, width: 1200, height: 630, alt: fullTitle }],
       locale: "en_IN",
     },

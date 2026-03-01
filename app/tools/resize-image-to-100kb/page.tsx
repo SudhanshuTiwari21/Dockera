@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   ...getDefaultMetadata({
     title: buildOptimizedTitle("Resize Image to 100KB Online", { intent: "govt" }),
     description:
-      "Resize image to 100KB, 50KB or 20KB online for SSC, UPSC, railway and other govt forms. Free image size reducer tool for Indian users.",
+      "Resize image to 100KB, 50KB or 20KB online for forms, applications and uploads—SSC, UPSC, railway, jobs, college and more. Free image size reducer—no sign-up, processing in your browser.",
     keywords: [
       "resize image to 100kb",
       "image resize for govt forms",
@@ -30,8 +30,8 @@ export const metadata: Metadata = {
     url: canonicalUrl,
     title: buildOptimizedTitle("Resize Image to 100KB Online", { intent: "govt" }),
     description:
-      "Resize image to 100KB, 50KB or 20KB online for SSC, UPSC, railway and other govt forms. Free image size reducer tool for Indian users.",
-    siteName: "DocMint",
+      "Resize image to 100KB, 50KB or 20KB online for forms, applications and uploads—SSC, UPSC, railway, jobs, college and more. Free image size reducer—no sign-up, processing in your browser.",
+    siteName: "Docera",
     locale: "en_IN",
     type: "website",
   },
@@ -90,7 +90,7 @@ const howToSchema = {
   "@context": "https://schema.org",
   "@type": "HowTo",
   name: "How to resize image to 100KB for government forms",
-  description: "Steps to resize your photo to 100KB or less for SSC, UPSC, railway and other Indian government forms using DocMint.",
+  description: "Steps to resize your photo to 100KB or less for SSC, UPSC, railway and other Indian government forms using Docera.",
   step: [
     {
       "@type": "HowToStep",
@@ -147,16 +147,16 @@ export default function ResizeImageTo100kbPage() {
           Resize Image to 100KB Online for Govt Forms
         </h1>
         <p className="mt-4 max-w-2xl text-lg text-slate-600 dark:text-slate-400">
-          Resize image to 100KB, 50KB or 20KB online for SSC, UPSC, railway and
-          other govt forms. Free image size reducer for Indian users—no sign-up,
-          processing in your browser.
+          Resize image to 100KB, 50KB or 20KB online for forms, applications and
+          uploads—SSC, UPSC, railway, jobs, college and more. Free image size
+          reducer—no sign-up, processing in your browser.
         </p>
       </header>
 
       <div className="mb-14">
         <ResizeImageTool
           defaultTargetSize={100}
-          seoTitle="Resize Image to 100KB Online for Govt Forms | DocMint India"
+          seoTitle="Resize Image to 100KB Online for Govt Forms | Docera India"
           seoDescription=""
           heading="Resize image to 100KB"
         />

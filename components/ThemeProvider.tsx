@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useState } from "rea
 
 type Theme = "light" | "dark";
 
-const STORAGE_KEY = "docmint-theme";
+const STORAGE_KEY = "docera-theme";
 
 type ThemeContextValue = {
   theme: Theme;

@@ -6,9 +6,9 @@
 const MAX_TITLE_LENGTH = 65;
 
 const SUFFIXES = {
-  govt: " | Govt Form Upload Tool | DocMint",
-  exam: " | SSC, UPSC, Railway Forms | DocMint",
-  general: " | DocMint",
+  govt: " | Govt Form Upload Tool | Docera",
+  exam: " | SSC, UPSC, Railway Forms | Docera",
+  general: " | Docera",
 } as const;
 
 export type TitleIntent = "govt" | "exam" | "general";

@@ -1,5 +1,5 @@
 /**
- * Centralized internal link clusters for DocMint.
+ * Centralized internal link clusters for Docera.
  * Use keyword-rich, natural anchor text. Avoid generic "Click here".
  */
 

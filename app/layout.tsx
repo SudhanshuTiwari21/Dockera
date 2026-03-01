@@ -18,7 +18,7 @@ export const viewport: Viewport = {
 
 const themeScript = `
 (function() {
-  var k = 'docmint-theme';
+  var k = 'docera-theme';
   var v = localStorage.getItem(k);
   if (v === 'dark') document.documentElement.classList.add('dark');
   else document.documentElement.classList.remove('dark');

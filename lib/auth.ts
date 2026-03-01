@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
-const COOKIE_NAME = "docmint_premium";
+const COOKIE_NAME = "docera_premium";
 const PREMIUM_EXPIRY_DAYS = 30;
 
 function getSecret(): string {

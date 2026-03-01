@@ -1,4 +1,4 @@
-# DocMint SEO Strategy: Keyword Reinforcement
+# Docera SEO Strategy: Keyword Reinforcement
 
 Use this doc with Google Search Console data to turn rankings and impressions into a structured optimization workflow.
 
@@ -7,7 +7,7 @@ Use this doc with Google Search Console data to turn rankings and impressions in
 ## 1. Using Google Search Console
 
 1. **Add and verify the property**  
-   Go to [Search Console](https://search.google.com/search-console). Add property for your live domain (e.g. `https://docmint.com`). Verify via DNS (recommended) or HTML file.
+   Go to [Search Console](https://search.google.com/search-console). Add property for your live domain (e.g. `https://docera.com`). Verify via DNS (recommended) or HTML file.
 
 2. **Wait for data**  
    After verification, allow 2–4 weeks for meaningful impression/click/position data.
@@ -125,4 +125,4 @@ Keep a running list (e.g. in this file or a spreadsheet) so you can re-check pos
 | Which URL to edit | Performance → click a query or URL | See “Pages” and “Queries” for that URL |
 | After editing | Same reports, 2–4 weeks later | Compare position and CTR before/after |
 
-Use this together with DocMint’s internal linking (`lib/internalLinks.ts`) and title helper (`lib/titleOptimizer.ts`) for a consistent, data-driven workflow.
+Use this together with Docera’s internal linking (`lib/internalLinks.ts`) and title helper (`lib/titleOptimizer.ts`) for a consistent, data-driven workflow.

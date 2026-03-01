@@ -35,7 +35,7 @@ export function Header() {
 
   const mainNav = (
     <nav
-      className="hidden h-full items-center justify-center gap-0.5 sm:flex lg:gap-1"
+      className="hidden h-full min-w-max items-center gap-2 sm:flex lg:gap-4"
       aria-label="Main navigation"
     >
       <Link
@@ -172,23 +172,23 @@ export function Header() {
       {/* Top dark strip */}
       <div className={topBarClass} aria-hidden />
 
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-4 pl-6 pr-6 sm:pl-8 sm:pr-8 lg:pl-10 lg:pr-10">
+      <div className="mx-auto flex h-14 max-w-7xl items-center gap-6 pl-6 pr-6 sm:pl-8 sm:pr-8 lg:gap-8 lg:pl-10 lg:pr-10">
         <Link
           href="/"
-          className="shrink-0 text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100 lg:text-xl"
-          aria-label="DocMint – Home"
+          className="mr-6 shrink-0 text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100 lg:mr-8 lg:text-xl"
+          aria-label="Docera – Home"
         >
-          DocMint
+          Docera
         </Link>
 
-        {/* Desktop: center nav – takes remaining space, no overlap */}
-        <div className="hidden min-w-0 flex-1 justify-center sm:flex sm:h-full">
+        {/* Desktop: center nav – left-aligned so first links (Resize Image) aren't clipped */}
+        <div className="hidden min-w-0 flex-1 justify-start overflow-x-auto sm:flex sm:h-full">
           {mainNav}
         </div>
 
         {/* Right: Login, Sign up, theme, mobile menu */}
-        <div className="flex shrink-0 items-center gap-1 sm:gap-2">
-          <div className="hidden items-center gap-2 sm:flex">
+        <div className="ml-6 flex shrink-0 items-center gap-2 sm:gap-3 lg:ml-8">
+          <div className="hidden items-center gap-3 sm:flex">
             <Link
               href="/login"
               className="rounded-md px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"

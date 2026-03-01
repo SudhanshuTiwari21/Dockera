@@ -7,7 +7,7 @@ const canonicalUrl = buildCanonicalUrl(path);
 
 export const metadata: Metadata = {
   ...getDefaultMetadata({
-    title: "How to Compress PDF for Govt Form Upload | DocMint",
+    title: "How to Compress PDF for Govt Form Upload | Docera",
     description:
       "Steps to compress and reduce PDF file size for government form uploads in India. Free PDF compressor for SSC, UPSC, and other portals.",
     path,

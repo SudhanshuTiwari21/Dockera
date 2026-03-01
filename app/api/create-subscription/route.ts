@@ -27,7 +27,7 @@ export async function POST() {
         period: PLAN_INTERVAL,
         interval: 1,
         item: {
-          name: "DocMint Premium",
+          name: "Docera Premium",
           amount: PLAN_AMOUNT_PAISE,
           currency: CURRENCY,
           description: "Unlimited image resizing and document tools",

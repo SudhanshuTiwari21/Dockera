@@ -9,7 +9,7 @@ const canonicalUrl = buildCanonicalUrl(path);
 
 export const metadata: Metadata = {
   ...getDefaultMetadata({
-    title: "Resize Image to 20KB Online for Govt Forms | DocMint India",
+    title: "Resize Image to 20KB Online for Govt Forms | Docera India",
     description:
       "Resize image to 20KB online for SSC, UPSC, railway and other government forms with strict size limits. Free image size reducer for Indian users.",
     keywords: [
@@ -91,7 +91,7 @@ export default function ResizeImageTo20kbPage() {
       <div className="mb-14">
         <ResizeImageTool
           defaultTargetSize={20}
-          seoTitle="Resize Image to 20KB | DocMint"
+          seoTitle="Resize Image to 20KB | Docera"
           seoDescription=""
           heading="Resize image to 20KB"
         />

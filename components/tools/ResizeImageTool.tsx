@@ -328,7 +328,7 @@ export function ResizeImageTool({
       const rzp = new Razorpay({
         key,
         subscription_id,
-        name: "DocMint",
+        name: "Docera",
         handler: async (response: {
           razorpay_subscription_id: string;
           razorpay_payment_id: string;

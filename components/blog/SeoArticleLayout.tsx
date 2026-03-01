@@ -3,7 +3,7 @@ import Link from "next/link";
 import { buildCanonicalUrl } from "@/lib/seo";
 import { RelatedToolsLinks } from "@/components/RelatedToolsLinks";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://docmint.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://docera.com";
 
 export type SeoArticleLayoutProps = {
   title: string;
@@ -29,14 +29,14 @@ export type SeoArticleMetadataParams = {
 export function getSeoArticleMetadata(params: SeoArticleMetadataParams): Metadata {
   const { title, description, keywords = [], canonicalPath } = params;
   const canonical = buildCanonicalUrl(canonicalPath);
-  const fullTitle = title.includes("DocMint") ? title : `${title} | DocMint`;
+  const fullTitle = title.includes("Docera") ? title : `${title} | Docera`;
 
   return {
     title: fullTitle,
     description,
     keywords: keywords.length > 0 ? keywords.join(", ") : undefined,
-    authors: [{ name: "DocMint", url: SITE_URL }],
-    creator: "DocMint",
+    authors: [{ name: "Docera", url: SITE_URL }],
+    creator: "Docera",
     metadataBase: new URL(SITE_URL),
     alternates: { canonical },
     robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
@@ -45,7 +45,7 @@ export function getSeoArticleMetadata(params: SeoArticleMetadataParams): Metadat
       url: canonical,
       title: fullTitle,
       description,
-      siteName: "DocMint",
+      siteName: "Docera",
       locale: "en_IN",
     },
     twitter: {
@@ -72,7 +72,7 @@ function buildArticleSchema(
     url: canonical,
     publisher: {
       "@type": "Organization",
-      name: "DocMint",
+      name: "Docera",
       url: SITE_URL,
     },
   };

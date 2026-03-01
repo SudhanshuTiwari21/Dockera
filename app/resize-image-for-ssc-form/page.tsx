@@ -92,7 +92,7 @@ export default function ResizeImageForSscFormPage() {
       <div className="mb-14">
         <ResizeImageTool
           defaultTargetSize={50}
-          seoTitle="Resize Image for SSC Form | DocMint"
+          seoTitle="Resize Image for SSC Form | Docera"
           seoDescription=""
           heading="Resize image for SSC form"
         />

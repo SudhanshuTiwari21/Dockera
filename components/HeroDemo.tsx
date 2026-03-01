@@ -29,7 +29,7 @@ export function HeroDemo() {
   return (
     <Image
       src="/hero-demo.gif"
-      alt="DocMint in action: resizing an image and compressing a PDF in the browser"
+      alt="Docera in action: resizing an image and compressing a PDF in the browser"
       fill
       className="object-contain"
       sizes="(max-width: 1024px) 100vw, 1024px"

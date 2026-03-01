@@ -15,7 +15,7 @@ import {
 
 export const metadata: Metadata = {
   ...getDefaultMetadata({
-    title: "DocMint – Free Online Document & Image Tools",
+    title: "Docera – Free Online Document & Image Tools",
     description:
       "Every tool you need for documents and images in one place. Resize images for government forms, compress PDFs, create passport photos, extract signatures. 100% free, private, and easy to use.",
     keywords: [
@@ -56,8 +56,8 @@ const faqs = [
     a: "Use our Resize Image tool: upload your photo, select 100KB as the target size, and click Resize. The tool runs in your browser and outputs a file under 100KB. You can also choose 20KB or 50KB for stricter form limits.",
   },
   {
-    q: "Is DocMint safe?",
-    a: "Yes. DocMint is designed for privacy. Processing runs in your browser where possible, and we don't store your files. No sign-up is required to use the tools.",
+    q: "Is Docera safe?",
+    a: "Yes. Docera is designed for privacy. Processing runs in your browser where possible, and we don't store your files. No sign-up is required to use the tools.",
   },
   {
     q: "Do files get uploaded?",
@@ -139,10 +139,12 @@ export default function HomePage() {
         className="mx-auto max-w-6xl px-4 pt-4 pb-10 sm:px-6 sm:pt-2 sm:pb-12 lg:px-8"
         aria-labelledby="tools-heading"
       >
-        <TrueFocusHeading />
-        <p className="mt-1.5 text-slate-600 dark:text-slate-400">
-          All tools are free. Processing runs in your browser when possible.
-        </p>
+        <div className="text-center">
+          <TrueFocusHeading />
+          <p className="mt-1.5 text-slate-600 dark:text-slate-400">
+            All tools are free. Processing runs in your browser when possible.
+          </p>
+        </div>
         <ul className="mt-6 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
           {allTools.map(({ href, title, description, icon: Icon }) => (
             <li key={href} className="flex">
@@ -168,7 +170,7 @@ export default function HomePage() {
       </section>
 
       {/* Hero demo – GIF below cards (lazy-loaded); add public/hero-demo.gif or hero-demo.webm */}
-      <section className="mx-auto max-w-6xl px-4 pb-14 sm:px-6 sm:pb-16 lg:px-8" aria-label="DocMint in action">
+      <section className="mx-auto max-w-6xl px-4 pb-14 sm:px-6 sm:pb-16 lg:px-8" aria-label="Docera in action">
         <div
           className="animate-fade-in-up rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800/80 overflow-hidden shadow-lg"
           style={{ minHeight: "280px" }}
@@ -182,7 +184,7 @@ export default function HomePage() {
       {/* Trust strip */}
       <section
         className="border-y border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50"
-        aria-label="Why trust DocMint"
+        aria-label="Why trust Docera"
       >
         <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
           <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -238,7 +240,7 @@ export default function HomePage() {
           Frequently asked questions
         </h2>
         <p className="mt-2 text-slate-600 dark:text-slate-400">
-          Quick answers about DocMint and our tools.
+          Quick answers about Docera and our tools.
         </p>
         <dl className="mt-10 space-y-8">
           {faqs.map(({ q, a }) => (

@@ -92,7 +92,7 @@ export default function ResizeImageTo50kbPage() {
       <div className="mb-14">
         <ResizeImageTool
           defaultTargetSize={50}
-          seoTitle="Resize Image to 50KB | DocMint"
+          seoTitle="Resize Image to 50KB | Docera"
           seoDescription=""
           heading="Resize image to 50KB"
         />

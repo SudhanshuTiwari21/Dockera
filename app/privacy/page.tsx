@@ -5,7 +5,7 @@ import { getDefaultMetadata } from "@/lib/seo";
 export const metadata: Metadata = {
   ...getDefaultMetadata({
     title: "Privacy Policy",
-    description: "DocMint privacy policy. How we handle your data when you use our document and image tools.",
+    description: "Docera privacy policy. How we handle your data when you use our document and image tools.",
     path: "/privacy",
   }),
 };

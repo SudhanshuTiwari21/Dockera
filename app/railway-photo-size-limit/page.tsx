@@ -7,7 +7,7 @@ const canonicalUrl = buildCanonicalUrl(path);
 
 export const metadata: Metadata = {
   ...getDefaultMetadata({
-    title: "Railway Exam Photo Size Limit | DocMint",
+    title: "Railway Exam Photo Size Limit | Docera",
     description:
       "Photo size and dimension requirements for railway recruitment forms. Resize your image to the required limit for railway applications.",
     path,

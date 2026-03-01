@@ -1,4 +1,4 @@
-const STORAGE_PREFIX = "docmint_usage_";
+const STORAGE_PREFIX = "docera_usage_";
 
 function getStorageKey(toolId: string): string {
   return `${STORAGE_PREFIX}${toolId}`;
