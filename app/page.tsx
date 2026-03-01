@@ -10,7 +10,6 @@ import {
   Zap,
   Smartphone,
   ArrowRight,
-  CheckCircle2,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -31,24 +30,6 @@ export const metadata: Metadata = {
     path: "/",
   }),
 };
-
-const steps = [
-  {
-    step: 1,
-    title: "Choose a tool",
-    description: "Pick the document or image tool you need from the grid above.",
-  },
-  {
-    step: 2,
-    title: "Upload or add your file",
-    description: "Your file stays in your browser. Nothing is sent to our servers.",
-  },
-  {
-    step: 3,
-    title: "Download the result",
-    description: "Get your resized image, compressed PDF or extracted signature instantly.",
-  },
-] as const;
 
 const faqs = [
   {
@@ -103,29 +84,31 @@ export default function HomePage() {
           <div className="text-center">
             <h1
               id="hero-heading"
-              className="animate-fade-in-up text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl lg:text-4xl"
+              className="animate-hero-headline text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl lg:text-4xl"
             >
               Every tool you need for documents & images in one place
             </h1>
-            <p className="animate-fade-in-up animate-stagger-1 mt-5 max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-300 sm:text-l">
-              Resize images for government forms, compress PDFs, create passport photos, and extract signatures. <strong>100% free</strong> and easy to use — no sign-up required.
+            <p className="animate-hero-subtitle mt-5 max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-300 sm:text-l">
+              Resize images for government forms, compress PDFs, create passport photos, and extract signatures.{" "}
+              <strong className="animate-hero-highlight inline-block px-1 rounded">100% free</strong>
+              {" "}and easy to use — no sign-up required.
             </p>
-            <div className="animate-fade-in-up animate-stagger-2 mt-8 flex flex-wrap items-center justify-center gap-4">
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/tools/resize-image-to-100kb"
-                className="inline-flex items-center justify-center rounded-xl bg-slate-900 dark:bg-slate-100 px-5 py-3.5 text-base font-semibold text-white dark:text-slate-900 shadow-sm hover:bg-slate-800 dark:hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 dark:focus-visible:outline-slate-100"
+                className="animate-hero-buttons animate-hero-btn-1 inline-flex items-center justify-center rounded-xl bg-slate-900 dark:bg-slate-100 px-5 py-3.5 text-base font-semibold text-white dark:text-slate-900 shadow-sm hover:bg-slate-800 dark:hover:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 dark:focus-visible:outline-slate-100 transition-transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 Resize Image
               </Link>
               <Link
                 href="/tools/pdf-compressor"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-5 py-3.5 text-base font-semibold text-slate-900 dark:text-slate-100 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 dark:focus-visible:outline-slate-100"
+                className="animate-hero-buttons animate-hero-btn-2 inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-5 py-3.5 text-base font-semibold text-slate-900 dark:text-slate-100 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 dark:focus-visible:outline-slate-100 transition-transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 Compress PDF
               </Link>
               <Link
                 href="/tools/passport-photo"
-                className="inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-5 py-3.5 text-base font-semibold text-slate-900 dark:text-slate-100 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 dark:focus-visible:outline-slate-100"
+                className="animate-hero-buttons animate-hero-btn-3 inline-flex items-center justify-center rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-5 py-3.5 text-base font-semibold text-slate-900 dark:text-slate-100 shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 dark:focus-visible:outline-slate-100 transition-transform hover:scale-[1.02] active:scale-[0.98]"
               >
                 Passport Photo
               </Link>
@@ -169,15 +152,10 @@ export default function HomePage() {
         </ul>
       </section>
 
-      {/* Hero demo – GIF below cards (lazy-loaded); add public/hero-demo.gif or hero-demo.webm */}
+      {/* Hero demo – browser mockup with tool preview or video/gif */}
       <section className="mx-auto max-w-6xl px-4 pb-14 sm:px-6 sm:pb-16 lg:px-8" aria-label="Docera in action">
-        <div
-          className="animate-fade-in-up rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-800/80 overflow-hidden shadow-lg"
-          style={{ minHeight: "280px" }}
-        >
-          <div className="relative aspect-video w-full max-w-4xl mx-auto">
-            <HeroDemo />
-          </div>
+        <div className="animate-fade-in-up w-full max-w-4xl mx-auto rounded-2xl overflow-hidden">
+          <HeroDemo />
         </div>
       </section>
 
@@ -200,37 +178,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* How it works */}
-      <section
-        className="border-t border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 py-16 sm:py-20"
-        aria-labelledby="how-it-works-heading"
-      >
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <h2 id="how-it-works-heading" className="text-2xl font-bold text-slate-900 dark:text-slate-100 sm:text-3xl">
-            How it works
-          </h2>
-          <p className="mt-2 text-slate-600 dark:text-slate-400">
-            Three simple steps to fix your documents.
-          </p>
-          <ol className="mt-10 grid gap-8 sm:grid-cols-3">
-            {steps.map(({ step, title, description }) => (
-              <li key={step} className="relative flex gap-4">
-                <span
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white dark:bg-slate-800 text-lg font-bold text-slate-900 dark:text-slate-100 shadow-sm ring-1 ring-slate-200/80 dark:ring-slate-600/80"
-                  aria-hidden
-                >
-                  {step}
-                </span>
-                <div>
-                  <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">{title}</h3>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">{description}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
       {/* FAQ */}
       <section
         className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8"
@@ -242,17 +189,22 @@ export default function HomePage() {
         <p className="mt-2 text-slate-600 dark:text-slate-400">
           Quick answers about Docera and our tools.
         </p>
-        <dl className="mt-10 space-y-8">
-          {faqs.map(({ q, a }) => (
-            <div key={q}>
-              <dt className="flex items-start gap-2 text-base font-semibold text-slate-900 dark:text-slate-100">
-                <CheckCircle2 className="h-5 w-5 shrink-0 text-slate-400 dark:text-slate-500 mt-0.5" aria-hidden />
+        <div className="join join-vertical mt-10 w-full rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-sm">
+          {faqs.map(({ q, a }, index) => (
+            <div
+              key={q}
+              className="collapse collapse-arrow join-item border-0 border-b border-slate-200 dark:border-slate-700 last:border-b-0 bg-white dark:bg-slate-800"
+            >
+              <input type="radio" name="faq-accordion" defaultChecked={index === 0} />
+              <div className="collapse-title min-h-0 py-4 text-base font-semibold text-slate-900 dark:text-slate-100 after:top-4">
                 {q}
-              </dt>
-              <dd className="mt-2 ml-7 text-sm text-slate-600 dark:text-slate-400">{a}</dd>
+              </div>
+              <div className="collapse-content text-sm text-slate-600 dark:text-slate-400">
+                <p className="pt-0 pb-4">{a}</p>
+              </div>
             </div>
           ))}
-        </dl>
+        </div>
         <p className="mt-10 text-sm text-slate-500 dark:text-slate-400">
           Need to resize for a specific form? See our guides on{" "}
           <Link href="/resize-image-for-ssc-form" className="font-medium text-slate-900 dark:text-slate-200 underline underline-offset-2 hover:no-underline">

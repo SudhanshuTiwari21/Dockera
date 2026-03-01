@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { checkAndUpdateDailyUsage } from "@/lib/usageLimit";
+import { FileInput } from "@/components/ui/FileInput";
 
 export type ResizeImageToolProps = {
   defaultTargetSize: number;
@@ -399,12 +400,13 @@ export function ResizeImageTool({
           <label htmlFor="file-input" className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
             Upload image
           </label>
-          <input
+          <FileInput
             id="file-input"
-            type="file"
             accept="image/*"
             onChange={handleFileChange}
-            className="block w-full text-sm text-slate-600 file:mr-4 file:rounded-md file:border-0 file:bg-slate-100 file:px-4 file:py-2 file:text-slate-700 dark:file:bg-slate-700 dark:file:text-slate-200"
+            inputSize="md"
+            variant="neutral"
+            className="w-full"
           />
           {file && (
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
