@@ -57,20 +57,13 @@ export function Header() {
         Compress PDF
       </Link>
 
-      {/* Convert PDF dropdown – DaisyUI */}
-      <div className="dropdown dropdown-end dropdown-hover">
-        <div
-          tabIndex={0}
-          role="button"
-          className="inline-flex h-full cursor-pointer items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 lg:px-3"
-        >
+      {/* Convert PDF dropdown – DaisyUI details/summary (click to open) */}
+      <details className="dropdown dropdown-end group">
+        <summary className="inline-flex h-full cursor-pointer list-none items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 lg:px-3 [&::-webkit-details-marker]:hidden">
           <span className="whitespace-nowrap">Convert PDF</span>
-          <ChevronDown className="h-4 w-4 shrink-0" aria-hidden />
-        </div>
-        <ul
-          tabIndex={-1}
-          className="menu dropdown-content z-[60] mt-1 min-w-[220px] rounded-box border border-base-300 bg-base-100 p-2 shadow-xl"
-        >
+          <ChevronDown className="h-4 w-4 shrink-0 transition group-open:rotate-180" aria-hidden />
+        </summary>
+        <ul className="menu dropdown-content z-[60] mt-1 min-w-[220px] rounded-box border border-base-300 bg-base-100 p-2 shadow-xl">
           {convertPdfDropdownTools.map(({ href, title, icon: Icon }) => (
             <li key={href}>
               <Link
@@ -85,25 +78,18 @@ export function Header() {
             </li>
           ))}
         </ul>
-      </div>
+      </details>
 
-      {/* All Image Tools dropdown – DaisyUI */}
-      <div className="dropdown dropdown-bottom dropdown-center dropdown-hover">
-        <div
-          tabIndex={0}
-          role="button"
-          className="inline-flex h-full cursor-pointer items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 lg:px-3"
-        >
+      {/* All Image Tools dropdown – DaisyUI details/summary (click to open) */}
+      <details className="dropdown dropdown-bottom dropdown-center group">
+        <summary className="inline-flex h-full cursor-pointer list-none items-center gap-1 rounded-md px-2 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 lg:px-3 [&::-webkit-details-marker]:hidden">
           <span className="whitespace-nowrap">All Image Tools</span>
-          <ChevronDown className="h-4 w-4 shrink-0" aria-hidden />
-        </div>
-        <div
-          tabIndex={-1}
-          className="dropdown-content z-[60] mt-1 w-[min(90vw,680px)] rounded-xl border border-base-300 bg-base-100 p-6 shadow-xl"
-        >
+          <ChevronDown className="h-4 w-4 shrink-0 transition group-open:rotate-180" aria-hidden />
+        </summary>
+        <div className="dropdown-content z-[60] mt-1 w-[min(90vw,680px)] rounded-xl border border-base-300 bg-base-100 p-6 shadow-xl">
           <MegaMenuContent columns={allImageToolsColumns} />
         </div>
-      </div>
+      </details>
 
       {/* All PDF Tools dropdown */}
       <div
@@ -152,8 +138,8 @@ export function Header() {
           Dockera
         </Link>
 
-        {/* Desktop: center nav – left-aligned so first links (Resize Image) aren't clipped */}
-        <div className="hidden min-w-0 flex-1 justify-start overflow-x-auto sm:flex sm:h-full">
+        {/* Desktop: center nav – overflow-visible so dropdowns extend below (overflow-x-auto clips them) */}
+        <div className="hidden min-w-0 flex-1 justify-start overflow-visible sm:flex sm:h-full">
           {mainNav}
         </div>
 
