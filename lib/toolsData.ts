@@ -8,7 +8,6 @@ import {
   FileText,
   Layers,
   Scissors,
-  FileType,
   Camera,
   PenTool,
 } from "lucide-react";
@@ -69,18 +68,6 @@ export const allTools: ToolEntry[] = [
     title: "Split PDF",
     description: "Split one PDF into multiple files. Extract pages or split by range.",
     icon: Scissors,
-  },
-  {
-    href: "/tools/pdf-to-word",
-    title: "PDF to Word",
-    description: "Convert PDF to editable DOC or DOCX. Preserve layout and formatting.",
-    icon: FileType,
-  },
-  {
-    href: "/tools/word-to-pdf",
-    title: "Word to PDF",
-    description: "Convert DOC or DOCX documents to PDF. Preserve layout and formatting.",
-    icon: FileType,
   },
   {
     href: "/tools/pdf-to-jpg",
@@ -168,18 +155,14 @@ export const allPdfToolsColumns: DropdownColumn[] = [
   column("CONVERT TO PDF", [
     "/tools/jpg-to-pdf",
     "/tools/image-to-pdf",
-    "/tools/word-to-pdf",
   ]),
-  column("CONVERT FROM PDF", [
+  column("PDF TO IMAGES", [
     "/tools/pdf-to-jpg",
-    "/tools/pdf-to-word",
   ]),
 ];
 
 /** Links for "Convert PDF" dropdown. */
 export const convertPdfDropdownTools = [
-  "/tools/pdf-to-word",
-  "/tools/word-to-pdf",
   "/tools/pdf-to-jpg",
   "/tools/jpg-to-pdf",
   "/tools/image-to-pdf",

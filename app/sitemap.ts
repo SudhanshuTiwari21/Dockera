@@ -23,8 +23,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/tools/convert-from-jpg`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/tools/merge-pdf`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/tools/split-pdf`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/tools/pdf-to-word`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/tools/word-to-pdf`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/tools/pdf-to-jpg`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/tools/jpg-to-pdf`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/tools/image-to-pdf`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
