@@ -1,7 +1,8 @@
 const STORAGE_PREFIX = "docera_usage_";
+const ANON_KEY = "anon";
 
-function getStorageKey(toolId: string): string {
-  return `${STORAGE_PREFIX}${toolId}`;
+function getStorageKey(toolId: string, userKey: string | null): string {
+  return `${STORAGE_PREFIX}${toolId}_${userKey ?? ANON_KEY}`;
 }
 
 function getTodayDateString(): string {
@@ -18,18 +19,21 @@ export type DailyUsageState = {
  * Reads daily usage from localStorage, resets count if the date has changed,
  * and optionally records a new use (increment).
  * Use increment: true only after a successful tool use.
- * Reusable across tools—pass a unique toolId and the daily limit.
+ * Key usage by userId: anonymous users use "anon", logged-in users use their userId.
+ * When a user signs in, they get fresh limits (separate key).
+ * Reusable across tools—pass a unique toolId, the daily limit, and optional userId.
  */
 export function checkAndUpdateDailyUsage(
   toolId: string,
   limit: number,
-  increment = false
+  increment = false,
+  userId: string | null = null
 ): DailyUsageState {
   if (typeof window === "undefined") {
     return { allowed: true, count: 0, limit };
   }
 
-  const key = getStorageKey(toolId);
+  const key = getStorageKey(toolId, userId);
   const today = getTodayDateString();
 
   let data: { count: number; date: string };

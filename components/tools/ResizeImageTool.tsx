@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { checkAndUpdateDailyUsage } from "@/lib/usageLimit";
 import { FileInput } from "@/components/ui/FileInput";
+import { LimitReachedModal } from "@/components/ui/LimitReachedModal";
 
 export type ResizeImageToolProps = {
   defaultTargetSize: number;
@@ -13,21 +14,6 @@ export type ResizeImageToolProps = {
 
 const TOOL_ID = "resize-image";
 const DAILY_LIMIT = 5;
-
-declare global {
-  interface Window {
-    Razorpay?: new (options: {
-      key: string;
-      subscription_id: string;
-      name: string;
-      handler: (response: {
-        razorpay_subscription_id: string;
-        razorpay_payment_id: string;
-        razorpay_signature: string;
-      }) => void;
-    }) => { open: () => void };
-  }
-}
 
 const TARGET_OPTIONS = [
   { value: 20, label: "20 KB" },
@@ -45,104 +31,7 @@ function formatBytes(bytes: number): string {
   return `${(bytes / 1024).toFixed(1)} KB`;
 }
 
-function loadRazorpayScript(): Promise<void> {
-  if (typeof window === "undefined") return Promise.resolve();
-  if (window.Razorpay) return Promise.resolve();
-  return new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error("Razorpay script failed to load"));
-    document.body.appendChild(script);
-  });
-}
-
 type UsageState = { allowed: boolean; count: number; limit: number };
-
-function PremiumModal({
-  open,
-  onClose,
-  onUpgrade,
-  isLoading,
-  upgradeError,
-}: {
-  open: boolean;
-  onClose: () => void;
-  onUpgrade: () => void;
-  isLoading: boolean;
-  upgradeError: string | null;
-}) {
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === "Escape" && !isLoading) onClose();
-    },
-    [onClose, isLoading]
-  );
-
-  if (!open) return null;
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="premium-modal-title"
-      aria-describedby="premium-modal-desc"
-      onKeyDown={handleKeyDown}
-    >
-      <div
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
-        aria-hidden="true"
-        onClick={onClose}
-      />
-      <div className="relative z-10 w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl dark:border-slate-700 dark:bg-slate-800 sm:p-8">
-        <h2 id="premium-modal-title" className="text-xl font-bold text-slate-900 dark:text-slate-100 sm:text-2xl">
-          Unlock Unlimited Image Resizing
-        </h2>
-        <p id="premium-modal-desc" className="mt-2 text-slate-600 dark:text-slate-400">
-          Get unlimited access for just ₹99/month.
-        </p>
-        <ul className="mt-6 space-y-3" role="list">
-          <li className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-            <span className="text-emerald-500" aria-hidden>✓</span>
-            Unlimited compressions
-          </li>
-          <li className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-            <span className="text-emerald-500" aria-hidden>✓</span>
-            Priority processing
-          </li>
-          <li className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-            <span className="text-emerald-500" aria-hidden>✓</span>
-            No ads
-          </li>
-        </ul>
-        {upgradeError && (
-          <p className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-400" role="alert">
-            {upgradeError}
-          </p>
-        )}
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end">
-          <button
-            type="button"
-            onClick={onUpgrade}
-            disabled={isLoading}
-            className="order-2 rounded-md bg-slate-900 px-4 py-2.5 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-50 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200 sm:order-1"
-          >
-            {isLoading ? "Opening…" : "Upgrade Now"}
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className="order-1 rounded-md border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600 sm:order-2"
-          >
-            Continue with Free Tomorrow
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export function ResizeImageTool({
   defaultTargetSize,
@@ -159,23 +48,23 @@ export function ResizeImageTool({
   const [error, setError] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [usage, setUsage] = useState<UsageState>({ allowed: true, count: 0, limit: DAILY_LIMIT });
-  const [showPremiumModal, setShowPremiumModal] = useState(false);
+  const [showLimitModal, setShowLimitModal] = useState(false);
   const [isPremiumUser, setIsPremiumUser] = useState(false);
-  const [upgradeLoading, setUpgradeLoading] = useState(false);
-  const [upgradeError, setUpgradeError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setUsage(checkAndUpdateDailyUsage(TOOL_ID, DAILY_LIMIT, false));
-  }, []);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/premium-status", { credentials: "include" })
       .then((res) => res.json())
       .then((data) => {
         setIsPremiumUser(Boolean(data.premium));
+        setUserId(data.userId ?? null);
       })
       .catch(() => {});
   }, []);
+
+  useEffect(() => {
+    setUsage(checkAndUpdateDailyUsage(TOOL_ID, DAILY_LIMIT, false, userId));
+  }, [userId]);
 
   const resetResult = useCallback(() => {
     if (previewUrl) URL.revokeObjectURL(previewUrl);
@@ -210,15 +99,13 @@ export function ResizeImageTool({
     return kb * 1024;
   }, [targetKb, customKb, defaultTargetSize]);
 
-  const isNearLimit = !isPremiumUser && usage.limit > 0 && usage.count === usage.limit - 1;
-
   const compressImage = useCallback(async () => {
     if (!file) {
       setError("Please select an image first.");
       return;
     }
     if (!isPremiumUser && !usage.allowed) {
-      setShowPremiumModal(true);
+      setShowLimitModal(true);
       return;
     }
     const targetBytes = getTargetBytes();
@@ -278,7 +165,7 @@ export function ResizeImageTool({
       }
 
       if (!isPremiumUser) {
-        setUsage(checkAndUpdateDailyUsage(TOOL_ID, DAILY_LIMIT, true));
+        setUsage(checkAndUpdateDailyUsage(TOOL_ID, DAILY_LIMIT, true, userId));
       }
 
       const url = URL.createObjectURL(blob);
@@ -290,7 +177,7 @@ export function ResizeImageTool({
     } finally {
       setIsProcessing(false);
     }
-  }, [file, getTargetBytes, resetResult, usage.allowed]);
+  }, [file, getTargetBytes, resetResult, isPremiumUser, usage.allowed, userId]);
 
   const handleDownload = useCallback(() => {
     if (!resultBlob || !file) return;
@@ -300,73 +187,6 @@ export function ResizeImageTool({
     a.click();
     URL.revokeObjectURL(a.href);
   }, [resultBlob, file]);
-
-  const handleUpgrade = useCallback(async () => {
-    setUpgradeError(null);
-    setUpgradeLoading(true);
-    try {
-      const subRes = await fetch("/api/subscription/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ plan: "monthly" }),
-      });
-      if (!subRes.ok) {
-        const data = await subRes.json().catch(() => ({}));
-        if (subRes.status === 401) {
-          window.location.href = "/login?redirect=" + encodeURIComponent(window.location.pathname);
-          return;
-        }
-        setUpgradeError(data.error || "Could not start checkout");
-        return;
-      }
-      const { subscription_id, key } = (await subRes.json()) as {
-        subscription_id: string;
-        key: string;
-      };
-
-      await loadRazorpayScript();
-      const Razorpay = window.Razorpay;
-      if (!Razorpay) {
-        setUpgradeError("Payment script failed to load");
-        return;
-      }
-
-      const rzp = new Razorpay({
-        key,
-        subscription_id,
-        name: "Dockera",
-        handler: async (response: {
-          razorpay_subscription_id: string;
-          razorpay_payment_id: string;
-          razorpay_signature: string;
-        }) => {
-          const verifyRes = await fetch("/api/subscription/verify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-            body: JSON.stringify({
-              razorpay_subscription_id: response.razorpay_subscription_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-            }),
-          });
-          const data = await verifyRes.json().catch(() => ({}));
-          if (verifyRes.ok && data.success) {
-            setIsPremiumUser(true);
-            setShowPremiumModal(false);
-          } else {
-            setUpgradeError(data.error || "Verification failed");
-          }
-        },
-      });
-      rzp.open();
-    } catch (err) {
-      setUpgradeError(err instanceof Error ? err.message : "Checkout failed");
-    } finally {
-      setUpgradeLoading(false);
-    }
-  }, [isPremiumUser]);
 
   return (
     <section
@@ -385,21 +205,6 @@ export function ResizeImageTool({
         <span aria-hidden>🔒</span>
         Your files are processed in your browser. Nothing is uploaded.
       </p>
-
-      {!isPremiumUser && (
-        <div className="mb-4">
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            <span className="font-medium text-slate-700 dark:text-slate-300">
-              {usage.count} of {usage.limit} free uses today
-            </span>
-          </p>
-          {isNearLimit && (
-            <p className="mt-1 text-sm text-amber-700 dark:text-amber-400" role="status">
-              One free use left today. Resets tomorrow.
-            </p>
-          )}
-        </div>
-      )}
 
       <div className="space-y-4">
         <div>
@@ -500,15 +305,10 @@ export function ResizeImageTool({
         </div>
       )}
 
-      <PremiumModal
-        open={showPremiumModal}
-        onClose={() => {
-          setShowPremiumModal(false);
-          setUpgradeError(null);
-        }}
-        onUpgrade={handleUpgrade}
-        isLoading={upgradeLoading}
-        upgradeError={upgradeError}
+      <LimitReachedModal
+        open={showLimitModal}
+        onClose={() => setShowLimitModal(false)}
+        toolName="image resizing"
       />
     </section>
   );
