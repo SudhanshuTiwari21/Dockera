@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -15,6 +15,7 @@ declare global {
         razorpay_payment_id: string;
         razorpay_signature: string;
       }) => void;
+      modal?: { ondismiss?: () => void };
     }) => { open: () => void };
   }
 }
@@ -35,8 +36,9 @@ function loadRazorpayScript(): Promise<void> {
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const plan = searchParams.get("plan") ?? "monthly";
-  const [status, setStatus] = useState<"loading" | "error" | "checkout">("loading");
+  const [status, setStatus] = useState<"loading" | "error" | "checkout" | "cancelled">("loading");
   const [error, setError] = useState<string | null>(null);
+  const paymentHandled = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -77,6 +79,7 @@ function CheckoutContent() {
             razorpay_payment_id: string;
             razorpay_signature: string;
           }) => {
+            paymentHandled.current = true;
             const verifyRes = await fetch("/api/subscription/verify", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -94,6 +97,11 @@ function CheckoutContent() {
               setError(data.error ?? "Payment verification failed");
               setStatus("error");
             }
+          },
+          modal: {
+            ondismiss: () => {
+              if (!cancelled && !paymentHandled.current) setStatus("cancelled");
+            },
           },
         });
         rzp.open();
@@ -115,6 +123,27 @@ function CheckoutContent() {
           <p className="text-center text-slate-600 dark:text-slate-400">
             {status === "checkout" ? "Complete payment in the popup." : "Opening checkout…"}
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === "cancelled") {
+    return (
+      <div className="mx-auto max-w-md px-4 py-16">
+        <div className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm dark:border-neutral-700 dark:bg-neutral-900">
+          <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+            Payment cancelled
+          </h1>
+          <p className="mt-2 text-slate-600 dark:text-slate-400">
+            You closed the payment window. No charge was made.
+          </p>
+          <Link
+            href="/pricing"
+            className="btn btn-primary btn-block mt-6"
+          >
+            Back to pricing
+          </Link>
         </div>
       </div>
     );
