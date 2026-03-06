@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getDefaultMetadata } from "@/lib/seo";
 import { Check } from "lucide-react";
 import { PremiumPlanButton } from "@/components/PremiumPlanButton";
+import { getSession } from "@/lib/auth";
 
 export const metadata: Metadata = {
   ...getDefaultMetadata({
@@ -26,7 +27,12 @@ const premiumFeatures = [
   "Works on all devices",
 ];
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const session = await getSession();
+  const tier = session?.tier ?? null;
+  const isFree = tier === "free" || tier === null;
+  const isPro = tier === "premium";
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="text-center text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
@@ -52,12 +58,30 @@ export default function PricingPage() {
               </li>
             ))}
           </ul>
-          <Link
-            href="/tools/resize-image-to-100kb"
-            className="btn btn-outline btn-block mt-8"
-          >
-            Get started free
-          </Link>
+          <div className="mt-8">
+            {session && isFree ? (
+              <span
+                className="inline-flex w-full items-center justify-center rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-600 dark:border-neutral-600 dark:bg-neutral-800 dark:text-slate-400"
+                aria-label="Your current plan"
+              >
+                Current plan
+              </span>
+            ) : session && isPro ? (
+              <span
+                className="inline-flex w-full items-center justify-center rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-600 dark:border-neutral-600 dark:bg-neutral-800 dark:text-slate-400"
+                aria-label="Included in your plan"
+              >
+                Included in your plan
+              </span>
+            ) : (
+              <Link
+                href="/login?redirect=/pricing"
+                className="btn btn-outline btn-block"
+              >
+                Get started free
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Pro */}
@@ -81,12 +105,23 @@ export default function PricingPage() {
               </li>
             ))}
           </ul>
-          <PremiumPlanButton
-            href="/pricing/checkout?plan=monthly"
-            className="btn btn-primary btn-block mt-8"
-          >
-            Go Pro
-          </PremiumPlanButton>
+          <div className="mt-8">
+            {session && isPro ? (
+              <span
+                className="inline-flex w-full items-center justify-center rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-600 dark:border-neutral-600 dark:bg-neutral-800 dark:text-slate-400"
+                aria-label="Your current plan"
+              >
+                Current plan
+              </span>
+            ) : (
+              <PremiumPlanButton
+                href="/pricing/checkout?plan=monthly"
+                className="btn btn-primary btn-block"
+              >
+                Go Pro
+              </PremiumPlanButton>
+            )}
+          </div>
         </div>
       </div>
     </div>
