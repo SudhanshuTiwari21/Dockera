@@ -3,12 +3,21 @@ import { query } from "@/lib/db";
 import { sendOtpEmail } from "@/lib/email";
 import { createOtp, storeOtp } from "@/lib/otp";
 import { checkOtpRateLimit, recordOtpAttempt } from "@/lib/rateLimit";
+import { checkAuthRateLimit, recordAuthAttempt } from "@/lib/authRateLimit";
 
 function validateEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 255;
 }
 
 export async function POST(request: Request) {
+  const allowed = await checkAuthRateLimit(request, "auth");
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many attempts from your network. Please try again later." },
+      { status: 429 }
+    );
+  }
+
   let body: { email?: string };
   try {
     body = await request.json();
@@ -48,6 +57,7 @@ export async function POST(request: Request) {
     await storeOtp(email, otp, "login");
     await sendOtpEmail(email, otp);
     await recordOtpAttempt(email, "login");
+    await recordAuthAttempt(request, "auth");
 
     return NextResponse.json({ success: true });
   } catch (err) {

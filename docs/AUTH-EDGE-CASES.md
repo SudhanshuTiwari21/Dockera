@@ -32,11 +32,9 @@
 - **Issue**: If a user was deleted, `/me` returned `user: null` but the session cookie was left in place, so the client kept sending a useless token.
 - **Fix**: When `/me` finds no user for the session, the session cookie is cleared.
 
-### 4. Verification link reusable until token expiry
+### 4. Verification link one-time — **fixed**
 
-- **Current**: Verification link is a JWT valid 24 hours. After first use we set `email_verified_at` but do not invalidate the token, so the same link can be used again to create a session until it expires.
-- **Impact**: Low (link is in user’s email; re-use just logs them in again).
-- **Optional**: Store a “verification completed at” or invalidate token after first use if you want one-time links.
+- **Fix**: Verification tokens are stored in `verification_link_tokens` (hash, email, expires_at, used_at). On first use we set `used_at` and complete verification; subsequent uses get `login?error=link-already-used`.
 
 ### 5. Email enumeration
 
@@ -44,11 +42,9 @@
 - **Impact**: An attacker can discover which emails are registered.
 - **Optional**: Use a generic message (“If an account exists, we sent an OTP”) and always return 200 for send-OTP; consider similar for signup if you want to hide membership.
 
-### 6. No global/IP rate limit on auth endpoints
+### 6. Per-IP rate limit on auth endpoints — **fixed**
 
-- **Current**: Rate limits are per-email (signup, OTP). There is no global or per-IP limit on `/api/auth/*`.
-- **Impact**: An attacker could try many different emails (e.g. send-OTP or signup) and cause load or abuse.
-- **Optional**: Add a per-IP (or per-fingerprint) rate limit for auth routes (e.g. 50 requests/hour per IP).
+- **Fix**: `auth_ip_attempts` table and `lib/authRateLimit.ts` enforce 50 requests per IP per hour for signup, send-otp, verify-otp, and verify-email. Over limit returns 429 or redirects to `login?error=too-many-requests`.
 
 ### 7. Logout only clears cookie
 

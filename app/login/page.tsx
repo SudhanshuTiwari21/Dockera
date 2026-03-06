@@ -74,7 +74,9 @@ function LoginForm() {
 
   const errorMessages: Record<string, string> = {
     "invalid-token": "Invalid or expired link. Please request a new one.",
+    "link-already-used": "This verification link was already used. Please log in.",
     "missing-token": "Missing verification link.",
+    "too-many-requests": "Too many attempts from your network. Please try again later.",
     "user-not-found": "User not found. Please sign up first.",
     "server-error": "Server error. Please try again.",
   };

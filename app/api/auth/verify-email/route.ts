@@ -1,11 +1,17 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
-import { verifyVerificationToken } from "@/lib/verification";
+import { consumeVerificationToken } from "@/lib/verification";
 import { createSessionToken, setSessionCookie } from "@/lib/auth";
+import { checkAuthRateLimit, recordAuthAttempt } from "@/lib/authRateLimit";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://dockera.in";
 
 export async function GET(request: Request) {
+  const allowed = await checkAuthRateLimit(request, "auth");
+  if (!allowed) {
+    return Response.redirect(`${SITE_URL}/login?error=too-many-requests`);
+  }
+
   const { searchParams } = new URL(request.url);
   const token = searchParams.get("token");
 
@@ -13,10 +19,12 @@ export async function GET(request: Request) {
     return Response.redirect(`${SITE_URL}/login?error=missing-token`);
   }
 
-  const payload = verifyVerificationToken(token);
-  if (!payload || payload.purpose !== "verify-email") {
-    return Response.redirect(`${SITE_URL}/login?error=invalid-token`);
+  const result = await consumeVerificationToken(token);
+  if (!result.ok) {
+    const error = result.reason === "already-used" ? "link-already-used" : "invalid-token";
+    return Response.redirect(`${SITE_URL}/login?error=${error}`);
   }
+  const payload = result.payload;
 
   try {
     const rows = await query<{ id: string; email: string; tier: string }[]>(
@@ -33,6 +41,7 @@ export async function GET(request: Request) {
     const user = rows[0];
     const sessionToken = createSessionToken({ id: user.id, email: user.email, tier: user.tier });
     await setSessionCookie(sessionToken);
+    await recordAuthAttempt(request, "auth");
 
     return Response.redirect(`${SITE_URL}/?verified=1`);
   } catch (err) {

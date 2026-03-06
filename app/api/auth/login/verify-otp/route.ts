@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import { verifyAndDeleteOtp } from "@/lib/otp";
 import { createSessionToken, setSessionCookie } from "@/lib/auth";
+import { checkAuthRateLimit, recordAuthAttempt } from "@/lib/authRateLimit";
 
 function validateEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 255;
@@ -12,6 +13,14 @@ function validateOtp(otp: string): boolean {
 }
 
 export async function POST(request: Request) {
+  const allowed = await checkAuthRateLimit(request, "auth");
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many attempts from your network. Please try again later." },
+      { status: 429 }
+    );
+  }
+
   let body: { email?: string; otp?: string };
   try {
     body = await request.json();
@@ -51,6 +60,7 @@ export async function POST(request: Request) {
   const user = rows[0];
   const sessionToken = createSessionToken({ id: user.id, email: user.email, tier: user.tier });
   await setSessionCookie(sessionToken);
+  await recordAuthAttempt(request, "auth");
 
   return NextResponse.json({ success: true });
 }

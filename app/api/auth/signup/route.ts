@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 import { sendVerificationEmail, getVerificationLink } from "@/lib/email";
-import { createVerificationToken } from "@/lib/verification";
+import { createVerificationToken, storeVerificationToken } from "@/lib/verification";
 import { checkSignupRateLimit, recordOtpAttempt } from "@/lib/rateLimit";
+import { checkAuthRateLimit, recordAuthAttempt } from "@/lib/authRateLimit";
 
 function validateEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 255;
@@ -13,6 +14,14 @@ function validateName(name: string, maxLen: number): boolean {
 }
 
 export async function POST(request: Request) {
+  const allowed = await checkAuthRateLimit(request, "auth");
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many attempts from your network. Please try again later." },
+      { status: 429 }
+    );
+  }
+
   let body: { firstName?: string; lastName?: string; email?: string };
   try {
     body = await request.json();
@@ -68,10 +77,12 @@ export async function POST(request: Request) {
     }
 
     const token = createVerificationToken(email);
+    await storeVerificationToken(token, email);
     const link = getVerificationLink(token);
     await sendVerificationEmail(email, link);
 
     await recordOtpAttempt(email, "signup");
+    await recordAuthAttempt(request, "auth");
 
     return NextResponse.json({ success: true });
   } catch (err) {
